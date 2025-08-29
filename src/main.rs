@@ -204,6 +204,48 @@ fn union_enum_use() {
     print_product_detail(product3);
 }
 
+// Generic & Optional
+
+#[derive(Debug)]
+#[allow(unused)]
+struct BaseResponse<T> {
+    success: bool,
+    message: Option<String>,
+    error_message: Option<String>,
+    data: Option<T>
+}
+
+fn generic_use() {
+    let response = BaseResponse::<String> {
+        success: true,
+        message: None,
+        error_message: None,
+        data: Some(String::from("hi "))
+    };
+
+    println!("Response from generic struc: {:?}", response)
+}
+
+fn age_validate(age: u8) -> Result<bool, String> {
+    if age >= 20 {
+        return Ok(true)
+    } else {
+        return Err(String::from("age > 20 years"))
+    }
+}
+
+
+fn vector_use() {
+    let mut v1 = Vec::<u8>::new();
+    v1.push(1);
+    v1.push(2);
+    v1.push(3);
+    println!("Vec1: {:?}", v1);
+
+    let v2 = vec![1, 2, 3];
+    println!("Vec2: {:?}", v2);
+}
+
 fn main() {
     variable();
     
@@ -237,4 +279,15 @@ fn main() {
     enum_use();
 
     union_enum_use();
+
+    generic_use();
+
+    let age_validate: Result<bool, String> = age_validate(20);
+    
+    match age_validate {
+        Err(err) => println!("{}", err),
+        Ok(_) => println!("You age is validate pass")
+    }
+
+    vector_use();
 }
